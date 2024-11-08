@@ -27,6 +27,7 @@ if ($stmt->rowCount() > 0) {
     $sum_neck_correct = 0;
     $sum_back_correct = 0;
     $sum_shoulder_correct = 0;
+    $sum_distance_correct = 0;
 ?>
 <!-- Switch to HTML syntax for cleaner structure -->
 <div class="container-fluid p-4">
@@ -55,6 +56,7 @@ if ($stmt->rowCount() > 0) {
                     $sum_neck_correct += $row['neck_status'] == "Correct" ? 1 : 0;
                     $sum_back_correct += $row['back_status'] == "Correct" ? 1 : 0;
                     $sum_shoulder_correct += $row['shoulder_status'] == "Correct" ? 1 : 0;
+                    $sum_distance_correct += $row['distance_status'] == "correct distance!" ? 1 : 0;
                 ?>
             <tr>
                 <td><?php echo htmlspecialchars($row['timestamp']); ?></td>
@@ -77,11 +79,13 @@ if ($stmt->rowCount() > 0) {
 <div>sum_neck_correct => <?php echo $sum_neck_correct; ?></div>
 <div>sum_back_correct => <?php echo $sum_back_correct; ?></div>
 <div>sum_shoulder_correct => <?php echo $sum_shoulder_correct; ?></div>
+<div>sum_distance_correct => <?php echo $sum_distance_correct; ?></div>
 
 
 <div>Neck Correct percent => <?php echo $sum_neck_correct / $stmt->rowCount() * 100 ?>%</div>
 <div>Back Correct percent => <?php echo $sum_back_correct / $stmt->rowCount() * 100 ?>%</div>
 <div>Shoulder Correct percent => <?php echo $sum_shoulder_correct / $stmt->rowCount() * 100 ?>%</div>
+<div>Distance Correct percent => <?php echo $sum_distance_correct / $stmt->rowCount() * 100 ?>%</div>
 
 <!-- Add DataTables CSS and JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">

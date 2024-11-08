@@ -76,14 +76,12 @@ if ($stmt->rowCount() > 0) {
                             if ($row['neck_status'] == "Correct" && $row['back_status'] == "Correct" && $row['distance_status'] == "correct distance!") {
                                 echo "<font color='green'>Correct</font>";
                                 $sum_all += 1;
-                            }else{
-                             echo "<font color='red'>Incorrect</font>";
+                            } else {
+                                echo "<font color='red'>Incorrect</font>";}
                             ?>
                 </td>
             </tr>
-            <?php
-                }
-                ?>
+
         </tbody>
     </table>
 </div>
@@ -100,8 +98,8 @@ if ($stmt->rowCount() > 0) {
 <div>Distance Correct percent => <?php echo $sum_distance_correct / $stmt->rowCount() * 100 ?>%</div>
 <br />
 
-<div>All Correct Percent => <?php echo $sum_all/$stmt->rowCount()*100?>%</div>
-<?php }?>
+<div>All Correct Percent => <?php echo $sum_all / $stmt->rowCount() * 100 ?>%</div>
+<?php } ?>
 
 <!-- Add DataTables CSS and JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">

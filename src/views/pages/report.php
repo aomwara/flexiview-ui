@@ -24,45 +24,86 @@ $stmt->execute();
 
 // Check if records were found
 if ($stmt->rowCount() > 0) {
-    echo '<div class="container-fluid p-4">';
-    echo '<h2>Report</h2>';
-    echo '<p>This is your report from AI camera</p>';
+    $sum_neck_correct = 0;
+    $sum_back_correct = 0;
+    $sum_shoulder_correct = 0;
+?>
+<!-- Switch to HTML syntax for cleaner structure -->
+<div class="container-fluid p-4">
+    <h2>Report</h2>
+    <p>This is your report from AI camera</p>
 
-    // Display table header
-    echo '<table class="table table-bordered">';
-    echo '<thead><tr>';
-    echo '<th>Timestamp</th>';
-    echo '<th>Time Neck Incorrect</th>';
-    echo '<th>Time Back Incorrect</th>';
-    echo '<th>Time Shoulder Incorrect</th>';
-    echo '<th>Neck Status</th>';
-    echo '<th>Back Status</th>';
-    echo '<th>Shoulder Status</th>';
-    echo '<th>Distance Status</th>';
-    echo '<th>Total Correct Time</th>';
-    echo '<th>Total Incorrect Time</th>';
-    echo '</tr></thead>';
-    echo '<tbody>';
+    <!-- Add 'id' to the table for DataTables initialization -->
+    <table id="reportTable" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Time Neck Incorrect</th>
+                <th>Time Back Incorrect</th>
+                <th>Time Shoulder Incorrect</th>
+                <th>Neck Status</th>
+                <th>Back Status</th>
+                <th>Shoulder Status</th>
+                <th>Distance Status</th>
+                <th>Total Correct Time</th>
+                <th>Total Incorrect Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $sum_neck_correct += $row['neck_status'] == "Correct" ? 1 : 0;
+                    $sum_back_correct += $row['back_status'] == "Correct" ? 1 : 0;
+                    $sum_shoulder_correct += $row['shoulder_status'] == "Correct" ? 1 : 0;
+                ?>
+            <tr>
+                <td><?php echo htmlspecialchars($row['timestamp']); ?></td>
+                <td><?php echo htmlspecialchars($row['Time_Neck_Incorrect']); ?></td>
+                <td><?php echo htmlspecialchars($row['Time_Back_Incorrect']); ?></td>
+                <td><?php echo htmlspecialchars($row['Time_Shoulder_Incorrect']); ?></td>
+                <td><?php echo htmlspecialchars($row['neck_status']); ?></td>
+                <td><?php echo htmlspecialchars($row['back_status']); ?></td>
+                <td><?php echo htmlspecialchars($row['shoulder_status']); ?></td>
+                <td><?php echo htmlspecialchars($row['distance_status']); ?></td>
+                <td><?php echo htmlspecialchars($row['total_correct_time']); ?></td>
+                <td><?php echo htmlspecialchars($row['total_incorrect_time']); ?></td>
+            </tr>
+            <?php
+                }
+                ?>
+        </tbody>
+    </table>
+</div>
+<div>sum_neck_correct => <?php echo $sum_neck_correct; ?></div>
+<div>sum_back_correct => <?php echo $sum_back_correct; ?></div>
+<div>sum_shoulder_correct => <?php echo $sum_shoulder_correct; ?></div>
 
-    // Fetch and display each row of data
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo '<tr>';
-        echo '<td>' . htmlspecialchars($row['timestamp']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['Time_Neck_Incorrect']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['Time_Back_Incorrect']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['Time_Shoulder_Incorrect']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['neck_status']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['back_status']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['shoulder_status']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['distance_status']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['total_correct_time']) . '</td>';
-        echo '<td>' . htmlspecialchars($row['total_incorrect_time']) . '</td>';
-        echo '</tr>';
-    }
+<!-- Add DataTables CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+</script>
 
-    echo '</tbody>';
-    echo '</table>';
-    echo '</div>';
+<!-- Initialize DataTable -->
+<script>
+$(document).ready(function() {
+    $('#reportTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        order: [
+            [0, 'desc']
+        ], // Sort by timestamp (first column) in descending order
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ]
+    });
+});
+</script>
+<?php
 } else {
     echo '<div class="container-fluid p-4">';
     echo '<h2>Report</h2>';

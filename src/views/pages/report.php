@@ -28,7 +28,7 @@ if ($stmt->rowCount() > 0) {
     $sum_back_correct = 0;
     $sum_shoulder_correct = 0;
     $sum_distance_correct = 0;
-    $sum_all = 0;
+    $sum_all_correct = 0;
 ?>
 <!-- Switch to HTML syntax for cleaner structure -->
 <div class="container-fluid p-4">
@@ -49,7 +49,7 @@ if ($stmt->rowCount() > 0) {
                 <th>Distance Status</th>
                 <th>Total Correct Time</th>
                 <th>Total Incorrect Time</th>
-                <th>All Correct ?</th>
+                <th>All Correct</th>
             </tr>
         </thead>
         <tbody>
@@ -71,17 +71,19 @@ if ($stmt->rowCount() > 0) {
                 <td><?php echo htmlspecialchars($row['distance_status']); ?></td>
                 <td><?php echo htmlspecialchars($row['total_correct_time']); ?></td>
                 <td><?php echo htmlspecialchars($row['total_incorrect_time']); ?></td>
-                <td>
-                    <?php
-                            if ($row['neck_status'] == "Correct" && $row['back_status'] == "Correct" && $row['distance_status'] == "correct distance!") {
-                                echo "<font color='green'>Correct</font>";
-                                $sum_all += 1;
+                <td><?php
+                            if ($row['neck_status'] == "Correct" && $row['back_status'] == "Correct" && $row['shoulder_status'] == "Correct" && $row['distance_status'] == "correct distance!") {
+                                echo "<font color='green'>correct</font>";
+                                $sum_all_correct += 1;
                             } else {
-                                echo "<font color='red'>Incorrect</font>";}
-                            ?>
-                </td>
-            </tr>
+                                echo "<font color='red'>incorrect</font>";
+                            }
 
+                            ?></td>
+            </tr>
+            <?php
+                }
+                ?>
         </tbody>
     </table>
 </div>
@@ -92,14 +94,70 @@ if ($stmt->rowCount() > 0) {
 <br />
 <br />
 
-<div>Neck Correct percent => <?php echo $sum_neck_correct / $stmt->rowCount() * 100 ?>%</div>
-<div>Back Correct percent => <?php echo $sum_back_correct / $stmt->rowCount() * 100 ?>%</div>
-<div>Shoulder Correct percent => <?php echo $sum_shoulder_correct / $stmt->rowCount() * 100 ?>%</div>
-<div>Distance Correct percent => <?php echo $sum_distance_correct / $stmt->rowCount() * 100 ?>%</div>
-<br />
+<div class="container mt-4">
+    <div class="row">
+        <!-- Individual Stats Cards -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 border-primary">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Neck Posture</h5>
+                    <h2 class="card-text text-primary">
+                        <?php echo round($sum_neck_correct / $stmt->rowCount() * 100, 1) ?>%</h2>
+                    <p class="card-text text-muted">Correct: <?php echo $sum_neck_correct; ?> times</p>
+                </div>
+            </div>
+        </div>
 
-<div>All Correct Percent => <?php echo $sum_all / $stmt->rowCount() * 100 ?>%</div>
-<?php } ?>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 border-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Back Posture</h5>
+                    <h2 class="card-text text-success">
+                        <?php echo round($sum_back_correct / $stmt->rowCount() * 100, 1) ?>%</h2>
+                    <p class="card-text text-muted">Correct: <?php echo $sum_back_correct; ?> times</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 border-info">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Shoulder Posture</h5>
+                    <h2 class="card-text text-info">
+                        <?php echo round($sum_shoulder_correct / $stmt->rowCount() * 100, 1) ?>%</h2>
+                    <p class="card-text text-muted">Correct: <?php echo $sum_shoulder_correct; ?> times</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 border-warning">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Distance</h5>
+                    <h2 class="card-text text-warning">
+                        <?php echo round($sum_distance_correct / $stmt->rowCount() * 100, 1) ?>%</h2>
+                    <p class="card-text text-muted">Correct: <?php echo $sum_distance_correct; ?> times</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overall Stats Card -->
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card border-dark">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Overall Posture Score</h5>
+                    <h2
+                        class="card-text <?php echo ($sum_all_correct / $stmt->rowCount() * 100 > 70) ? 'text-success' : 'text-danger'; ?>">
+                        <?php echo round($sum_all_correct / $stmt->rowCount() * 100, 1) ?>%
+                    </h2>
+                    <p class="card-text text-muted">All metrics correct: <?php echo $sum_all_correct; ?> times</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Add DataTables CSS and JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">

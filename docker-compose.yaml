@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  flexiview_nginx:
+    build:
+      context: ./build
+      dockerfile: Dockerfile.nginx
+    container_name: flexiview_nginx
+    restart: always
+    ports:
+      - "9002:80"
+    volumes:
+      - ./src:/var/www/html:delegated
+    depends_on:
+      - flexiview_php
+      - flexiview_database
+
+  flexiview_php:
+    build:
+      context: ./build
+      dockerfile: Dockerfile.php
+    container_name: flexiview_php
+    restart: always
+    volumes:
+      - ./src:/var/www/html:delegated
+    expose:
+      - "9000"
+
+  flexiview_database:
+    image: mariadb:10.5.8
+    container_name: flexiview_database
+    restart: always
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./database/flexiview.sql:/docker-entrypoint-initdb.d/dump.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: "12345678"
+      MYSQL_DATABASE: flexiview
+    expose:
+      - "3306"
+
+  flexiview_dba:
+    depends_on:
+      - flexiview_database
+    image: phpmyadmin/phpmyadmin
+    container_name: flexiview_dba
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PMA_HOST: flexiview_database

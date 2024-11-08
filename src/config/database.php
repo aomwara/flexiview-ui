@@ -1,7 +1,7 @@
 <?php
 class Database
 {
-    private $host = "127.0.0.1";
+    private $host = "flexiview_database";
     private $db_name = "flexiview";
     private $username = "root";
     private $password = "12345678";

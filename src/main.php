@@ -24,14 +24,14 @@ require_once("session.php");
             <div class="p-4">
                 <div class="logo-container">
                     <img src="/assets/images/logo.png" alt="Logo" class="logo-full">
-                    <img src="/assets/images/logo-icon.png" alt="Logo" class="logo-icon">
+                    <img src="/assets/images/logo-icon.png" alt="Logo-icon" class="logo-icon">
                 </div>
                 <hr>
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link text-white" href="?page=home">
                             <i class="bi bi-speedometer2"></i>
-                            <span>Dashboard</span>
+                            <span>Home</span>
                         </a>
                     </li>
                     <li class="nav-item">

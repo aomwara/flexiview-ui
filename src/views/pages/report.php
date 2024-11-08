@@ -80,7 +80,8 @@ if ($stmt->rowCount() > 0) {
 <div>sum_back_correct => <?php echo $sum_back_correct; ?></div>
 <div>sum_shoulder_correct => <?php echo $sum_shoulder_correct; ?></div>
 <div>sum_distance_correct => <?php echo $sum_distance_correct; ?></div>
-
+<br />
+<br />
 
 <div>Neck Correct percent => <?php echo $sum_neck_correct / $stmt->rowCount() * 100 ?>%</div>
 <div>Back Correct percent => <?php echo $sum_back_correct / $stmt->rowCount() * 100 ?>%</div>

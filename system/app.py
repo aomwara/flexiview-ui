@@ -277,7 +277,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             current_time = time.time()
             if current_time - last_api_send_time >= API_SEND_INTERVAL:
                 try:
-                    url = f' https://flexiview.photha.online/api/send-data.php?Time_Neck_Incorrect={int(format_time(neck_correct_time))}&Time_Back_Incorrect={int(format_time(back_incorrect_time))}&Time_Shoulder_Incorrect={int(format_time(shoulder_incorrect_time))}&neck_status={neck_status}&back_status={back_status}&shoulder_status={shoulder_status}&distance_status={distance_status if "distance_status" in locals() else "Unknown"}&total_correct_time={correct_time}&total_incorrect_time={incorrect_time}'
+                    url = f' https://flexiview.photha.online/api/send-data.php?Time_Neck_Incorrect={format_time(neck_correct_time)}&Time_Back_Incorrect={format_time(back_incorrect_time)}&Time_Shoulder_Incorrect={format_time(shoulder_incorrect_time)}&neck_status={neck_status}&back_status={back_status}&shoulder_status={shoulder_status}&distance_status={distance_status if "distance_status" in locals() else "Unknown"}&total_correct_time={correct_time}&total_incorrect_time={incorrect_time}'
  
                     
                     response = requests.get(url)

@@ -78,6 +78,11 @@ if ($stmt->rowCount() > 0) {
 <div>sum_back_correct => <?php echo $sum_back_correct; ?></div>
 <div>sum_shoulder_correct => <?php echo $sum_shoulder_correct; ?></div>
 
+
+<div>Neck Correct percent => <?php echo $sum_neck_correct / $stmt->rowCount() * 100 ?>%</div>
+<div>Back Correct percent => <?php echo $sum_back_correct / $stmt->rowCount() * 100 ?>%</div>
+<div>Shoulder Correct percent => <?php echo $sum_shoulder_correct / $stmt->rowCount() * 100 ?>%</div>
+
 <!-- Add DataTables CSS and JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css"
